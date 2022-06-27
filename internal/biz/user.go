@@ -3,6 +3,8 @@ package biz
 import (
 	"context"
 	"errors"
+	"kratos-realworld/internal/conf"
+	"kratos-realworld/internal/pkg/middleware/auth"
 	"unsafe"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -30,11 +32,12 @@ type UserUsecase struct {
 	uc UserRepo
 	pr ProfileRepo
 
-	log *log.Helper
+	log  *log.Helper
+	jwtc *conf.JWT
 }
 
-func NewUserUsecase(uc UserRepo, pr ProfileRepo, logger log.Logger) *UserUsecase {
-	return &UserUsecase{uc: uc, pr: pr, log: log.NewHelper(logger)}
+func NewUserUsecase(uc UserRepo, pr ProfileRepo, logger log.Logger, jwtc *conf.JWT) *UserUsecase {
+	return &UserUsecase{uc: uc, pr: pr, log: log.NewHelper(logger), jwtc: jwtc}
 }
 
 func (uu *UserUsecase) Register(ctx context.Context, username, email, password string) (*User, error) {
@@ -50,10 +53,11 @@ func (uu *UserUsecase) Register(ctx context.Context, username, email, password s
 	if err := uu.uc.CreateUser(ctx, u); err != nil {
 		return nil, err
 	}
+
 	return &User{
 		Email:    email,
 		Username: username,
-		Token:    "",
+		Token:    uu.generateToken(username),
 	}, nil
 }
 
@@ -72,6 +76,14 @@ func (uu *UserUsecase) Login(ctx context.Context, email string, password string)
 		Image:    user.Image,
 		Token:    "",
 	}, nil
+}
+
+func (uu *UserUsecase) generateToken(username string) string {
+	token, err := auth.GenerateJWT(uu.jwtc.Token, username)
+	if err != nil {
+		return ""
+	}
+	return token
 }
 
 func hashPassword(pwd string) (string, error) {

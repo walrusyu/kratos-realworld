@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	v1 "kratos-realworld/api/realworld/v1"
+	myerrors "kratos-realworld/internal/errors"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -10,16 +11,21 @@ import (
 )
 
 func (s *RealWorldService) Register(ctx context.Context, req *v1.RegisterRequest) (*v1.RegisterReply, error) {
+	if len(req.Email) == 0 {
+		return nil, myerrors.NewError(411, "email", "can not be empty")
+	}
+
 	newUser, err := s.uu.Register(ctx, req.Username, req.Email, req.Password)
 	if err != nil {
 		return nil, err
 	}
 	return &v1.RegisterReply{
-		Profile: &v1.Profile{
-			Username:  newUser.Username,
-			Bio:       newUser.Bio,
-			Image:     newUser.Image,
-			Following: false,
+		User: &v1.User{
+			Username: newUser.Username,
+			Email:    newUser.Email,
+			Bio:      newUser.Bio,
+			Image:    newUser.Image,
+			Token:    newUser.Token,
 		},
 	}, nil
 }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package helloworld.v1;
+package realworld.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -195,11 +195,11 @@ message RegisterRequest {
 }
 
 message RegisterReply {
-  Profile profile = 1;
+  User user = 1;
 }
 
 message GetCurrentUserReply {
-  Profile profile = 1;
+  User user = 1;
 }
 
 message UpdateUserRequest {
@@ -207,7 +207,7 @@ message UpdateUserRequest {
 }
 
 message UpdateUserReply {
-  Profile profile = 1;
+  User user = 1;
 }
 
 message GetProfileRequest {
@@ -215,7 +215,7 @@ message GetProfileRequest {
 }
 
 message GetProfileReply {
-  string username = 1;
+  Profile profile = 1;
 }
 
 message FollowUserRequest {

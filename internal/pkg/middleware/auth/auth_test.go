@@ -8,7 +8,7 @@ import (
 )
 
 func TestGenerateJWT(t *testing.T) {
-	token, err := GenerateJWT()
+	token, err := GenerateJWT("secret", "ywf")
 	spew.Dump(token)
 	if err == nil {
 		panic(1)

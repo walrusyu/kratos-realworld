@@ -622,13 +622,13 @@ components:
         GetCurrentUserReply:
             type: object
             properties:
-                profile:
-                    $ref: '#/components/schemas/Profile'
+                user:
+                    $ref: '#/components/schemas/User'
         GetProfileReply:
             type: object
             properties:
-                username:
-                    type: string
+                profile:
+                    $ref: '#/components/schemas/Profile'
         GetTagsReply:
             type: object
             properties:
@@ -677,8 +677,8 @@ components:
         RegisterReply:
             type: object
             properties:
-                profile:
-                    $ref: '#/components/schemas/Profile'
+                user:
+                    $ref: '#/components/schemas/User'
         RegisterRequest:
             type: object
             properties:
@@ -732,8 +732,8 @@ components:
         UpdateUserReply:
             type: object
             properties:
-                profile:
-                    $ref: '#/components/schemas/Profile'
+                user:
+                    $ref: '#/components/schemas/User'
         UpdateUserRequest:
             type: object
             properties:
