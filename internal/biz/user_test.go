@@ -18,7 +18,7 @@ func TestHashPassword(t *testing.T) {
 
 func TestVerifyPassword(t *testing.T) {
 	pwd := "123"
-	hashed := "$2a$10$0EzHgndR5ij6mxpS73iVEOsaMPdI0NtA4zjSRuzwLW5VZSSfM4QdG"
+	hashed := "$2a$10$KL7XfuCEMUrAuzL06kzecuxzmc/AAj1aH97y/fy1A0QgIp3tfmVOu"
 	success := verifyPassword(hashed, pwd)
 	a := assert.New(t)
 	a.True(success)

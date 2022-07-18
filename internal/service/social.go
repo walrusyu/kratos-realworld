@@ -10,12 +10,17 @@ import (
 )
 
 func (s *RealWorldService) Login(ctx context.Context, req *v1.LoginRequest) (reply *v1.LoginReply, err error) {
+	user, err := s.uu.Login(ctx, req.Email, req.Password)
+	if err != nil {
+		return nil, err
+	}
+
 	return &v1.LoginReply{
 		Profile: &v1.Profile{
-			Username:  "testUser",
-			Bio:       "testBio",
-			Image:     "testImg",
-			Following: true,
+			Username:  user.Username,
+			Bio:       user.Bio,
+			Image:     user.Image,
+			Following: false,
 		},
 	}, nil
 }

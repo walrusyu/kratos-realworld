@@ -15,6 +15,10 @@ func errorEncoder(w nethttp.ResponseWriter, r *nethttp.Request, err error) {
 		w.WriteHeader(500)
 	}
 	w.Header().Set("Content-Type", "application/"+codec.Name())
-	w.WriteHeader(se.Code)
+	if se.Code > 99 && se.Code < 600 {
+		w.WriteHeader(se.Code)
+	} else {
+		w.WriteHeader(500)
+	}
 	_, _ = w.Write(body)
 }

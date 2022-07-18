@@ -37,12 +37,6 @@ func NewHTTPServer(c *conf.Server, j *conf.JWT, greeter *service.RealWorldServic
 			selector.Server(auth.JWTAuth(j.Token)).Match(NewSkipRoutesMatcher()).Build(),
 		),
 		http.Filter(
-			func(next nethttp.Handler) nethttp.Handler {
-				return nethttp.HandlerFunc(func(w nethttp.ResponseWriter, r *nethttp.Request) {
-					fmt.Printf("gogo\r\n")
-					next.ServeHTTP(w, r)
-				})
-			},
 			handlers.CORS(
 				handlers.AllowedHeaders([]string{"X-Request-With", "Content-Type", "Authorization"}),
 				handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}),

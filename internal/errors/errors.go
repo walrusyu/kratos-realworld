@@ -3,6 +3,8 @@ package errors
 import (
 	"errors"
 	"fmt"
+
+	kerrors "github.com/go-kratos/kratos/v2/errors"
 )
 
 type HTTPError struct {
@@ -29,6 +31,9 @@ func FromError(err error) *HTTPError {
 	}
 	if se := new(HTTPError); errors.As(err, &se) {
 		return se
+	}
+	if se := new(kerrors.Error); kerrors.As(err, &se) {
+		return NewError(int(se.Code), se.Reason, se.Message)
 	}
 	return &HTTPError{}
 }

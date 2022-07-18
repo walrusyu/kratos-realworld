@@ -73,3 +73,13 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+.PHONY: startdb
+# start db
+startdb:
+	cd deploy/mysql && docker-compose up -d
+
+.PHONY: stopdb
+# stop db
+stopdb:
+	cd deploy/mysql && docker-compose down
