@@ -8,4 +8,9 @@ services:
     ports:
       - 3307:3306
     volumes:
-      - "./data:/var/lib/mysql"
+      - "./mysql/data:/var/lib/mysql"
+  consul:
+    image: consul
+    ports:
+      - 8501:8500
+      - 8601:8600

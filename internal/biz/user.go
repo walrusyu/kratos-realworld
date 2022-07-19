@@ -6,8 +6,12 @@ import (
 	"kratos-realworld/internal/pkg/middleware/auth"
 	"unsafe"
 
+	consul "github.com/go-kratos/kratos/contrib/registry/consul/v2"
+
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/hashicorp/consul/api"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -62,6 +66,24 @@ func (uu *UserUsecase) Register(ctx context.Context, username, email, password s
 }
 
 func (uu *UserUsecase) Login(ctx context.Context, email string, password string) (*User, error) {
+	// new consul client
+	client, err := api.NewClient(api.DefaultConfig())
+	if err != nil {
+		panic(err)
+	}
+	// new dis with consul client
+	dis := consul.New(client)
+
+	endpoint := "discovery://default/provider"
+	conn, err := grpc.Dial(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(dis))
+	if err != nil {
+		panic(err)
+	}
+
+	defer conn.Close()
+
+	conn.Connect()
+
 	if len(email) == 0 {
 		return nil, errors.BadRequest("email", "connot be empty")
 	}

@@ -9,6 +9,7 @@ message Bootstrap {
   Server server = 1;
   Data data = 2;
   JWT jwt = 3;
+  Consul consul = 4;
 }
 
 message Server {
@@ -44,4 +45,8 @@ message Data {
 
 message JWT {
   string token = 1;
+}
+
+message Consul {
+  string addr = 1;
 }
